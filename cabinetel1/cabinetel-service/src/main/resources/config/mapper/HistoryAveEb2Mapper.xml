@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdcplus.cabinetel.basic.mapper.eb2.HistoryAveEb2Mapper">
+    <select id="insertOfCabinetelAveDetail" parameterType="com.xdcplus.model.dto.cabinetel.QueryDTO">
+        insert into ${toTable}(cabinet_id,value,clock)
+        SELECT #{cabinetId},sum(value) as value,UNIX_TIMESTAMP(clock) as clock
+        from
+        (
+        SELECT a.itemid,AVG(a.value) as value,a.clock
+        from
+        (
+        select h.itemid,`value`,FROM_UNIXTIME(h.clock,'%Y-%m-%d %k:%i') as clock
+        from ${table} h
+        where clock >= #{from} and #{to} >= clock
+        <if test="itemIda!=null and itemIdb!=null">
+            AND (itemid=#{itemIda} or itemid=#{itemIdb})
+        </if>
+        <if test="itemIds != null">
+            and h.itemid in
+            <foreach collection="itemIds" open="(" close=")" separator="," index="index" item="item">
+                #{item}
+            </foreach>
+        </if>
+        ) as a
+        GROUP BY a.clock,a.itemid
+        ) as b
+        GROUP BY b.clock
+    </select>
+</mapper>

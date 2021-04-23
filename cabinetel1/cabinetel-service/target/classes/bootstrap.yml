@@ -1,0 +1,68 @@
+#server:
+#  port: 8098
+server:
+  port: 8097
+  servlet:
+    context-path: /cabinetel
+
+spring:
+  application:
+    name: cabinetel-service
+  cloud:
+    nacos:
+      # 配置中心
+      config:
+        server-addr: 10.20.1.179:8848
+        file-extension: yml
+        refresh: true
+        shared-dataids: application-spring-cloud.yml,
+                        application-druid.yml,
+                        application-dubbo.yml,
+                        application-mybatis-plus.yml
+        #                        application-mysql-resource-plus.yml,
+        namespace: 83625376-d520-4e08-9c52-35a34cbb63fc
+
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+
+  datasource:
+    dynamic:
+#      p6spy: true
+      p6spy: false
+      # 默认false,建议线上关闭。
+      druid:
+        filters: stat
+      primary: eb2
+      datasource:
+        eb2:
+          username: root
+          password: xdcplus.com
+          url: jdbc:mysql://10.20.1.130:3306/zabbix?serverTimezone=Asia/Shanghai
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          #schema: db/schema.sql
+          druid: #\u8FD9\u91CC\u53EF\u4EE5\u91CD\u5199\u9ED8\u8BA4\u503C
+            initial-size: 5
+        eb1:
+          username: root
+          password:
+          url: jdbc:mysql://localhost:3306/zabbix?serverTimezone=Asia/Shanghai
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          druid:
+            initial-size: 6
+
+dubbo:
+  scan:
+    base-packages: com.xdcplus.cabinetel.basic.service.impl
+  cloud:
+    subscribed-services: "resource-service"
+  provider:
+    timeout: 30000
+  consumer:
+    timeout: 30000
+
+logging:
+  level:
+    com.alibaba.nacos.client.config.impl: WARN
+
+#logging:
+#  config: classpath:logback-spring.xml

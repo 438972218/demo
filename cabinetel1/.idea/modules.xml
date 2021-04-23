@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/cabinetel.iml" filepath="$PROJECT_DIR$/cabinetel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cabinetel-facade/cabinetel-facade.iml" filepath="$PROJECT_DIR$/cabinetel-facade/cabinetel-facade.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cabinetel-service/cabinetel-service.iml" filepath="$PROJECT_DIR$/cabinetel-service/cabinetel-service.iml" />
+    </modules>
+  </component>
+</project>
